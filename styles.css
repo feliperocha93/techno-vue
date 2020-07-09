@@ -1,0 +1,8 @@
+ul {
+  list-style: none;
+}
+
+li {
+  font-family: 'Helvetica';
+  padding-top: 15px;
+}
