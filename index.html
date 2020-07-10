@@ -15,9 +15,47 @@
 
   <body>
     <div id="app">
-      <ul>
-        <li v-for="produto in produtos">{{produto.nome}}</li>
-      </ul>
+      <section class="modal" v-if="produto" @click="fecharModal">
+        <div class="modal-container">
+          <div class="modal-img">
+            <img :src="produto.img" :alt="produto.nome" />
+          </div>
+          <div class="modal-dados">
+            <button @click="produto = false" class="modal-fechar">
+              X
+            </button>
+            <span class="modal-preco">{{produto.preco}}</span>
+            <h2 class="modal-titulo">{{produto.nome}}</h2>
+            <p>{{produto.descricao}}</p>
+            <button class="modal-btn">Adicionar Item</button>
+          </div>
+          <div class="avaliacoes">
+            <h2 class="avaliacoes-subtitulo">Avaliações</h2>
+            <ul>
+              <li v-for="review in produto.avaliacoes" class="avaliacao">
+                <p class="avaliacao-descricao">{{review.descricao}}</p>
+                <p class="avaliacao-usuario">
+                  {{review.nome}} | {{review.estrelas}}
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="produtos">
+        <div
+          v-for="produto in produtos"
+          class="produto"
+          @click="abrirModal(produto.id)"
+        >
+          <img :src="produto.img" :alt="produto.nome" class="produto-img" />
+          <div class="produto-info">
+            <span class="produto-preco">{{produto.preco | numeroPreco}}</span>
+            <h2 class="produto-titulo">{{produto.nome}}</h2>
+          </div>
+        </div>
+      </section>
     </div>
 
     <script src="./app.js"></script>
