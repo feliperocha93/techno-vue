@@ -15,6 +15,27 @@
 
   <body>
     <div id="app">
+      <header class="header">
+        <img src="./assets/techno.svg" alt="Techno" class="logo" />
+        <div class="carrinho-menu" @click="carrinhoAtivo = true">
+          {{carrinhoTotal | numeroPreco}} | {{carrinho.length}}
+        </div>
+      </header>
+
+      <section class="produtos">
+        <div
+          v-for="produto in produtos"
+          class="produto"
+          @click="abrirModal(produto.id)"
+        >
+          <img :src="produto.img" :alt="produto.nome" class="produto-img" />
+          <div class="produto-info">
+            <span class="produto-preco">{{produto.preco | numeroPreco}}</span>
+            <h2 class="produto-titulo">{{produto.nome}}</h2>
+          </div>
+        </div>
+      </section>
+
       <section class="modal" v-if="produto" @click="fecharModal">
         <div class="modal-container">
           <div class="modal-img">
@@ -24,10 +45,19 @@
             <button @click="produto = false" class="modal-fechar">
               X
             </button>
-            <span class="modal-preco">{{produto.preco}}</span>
+            <span class="modal-preco">{{produto.preco | numeroPreco}}</span>
             <h2 class="modal-titulo">{{produto.nome}}</h2>
             <p>{{produto.descricao}}</p>
-            <button class="modal-btn">Adicionar Item</button>
+            <button
+              v-if="produto.estoque"
+              @click="adicionarItem"
+              class="modal-btn"
+            >
+              Adicionar Item
+            </button>
+            <button v-else disabled class="modal-btn esgotado">
+              Produto Esgotado
+            </button>
           </div>
           <div class="avaliacoes">
             <h2 class="avaliacoes-subtitulo">Avaliações</h2>
@@ -43,19 +73,40 @@
         </div>
       </section>
 
-      <section class="produtos">
-        <div
-          v-for="produto in produtos"
-          class="produto"
-          @click="abrirModal(produto.id)"
-        >
-          <img :src="produto.img" :alt="produto.nome" class="produto-img" />
-          <div class="produto-info">
-            <span class="produto-preco">{{produto.preco | numeroPreco}}</span>
-            <h2 class="produto-titulo">{{produto.nome}}</h2>
+      <section
+        class="carrinho-modal"
+        :class="{ativo: carrinhoAtivo}"
+        @click="cliqueForaCarrinho"
+      >
+        <div class="carrinho-container">
+          <button @click="carrinhoAtivo = false" class="carrinho-fechar">
+            X
+          </button>
+          <h2 class="carrinho-titulo">Carrinho</h2>
+          <div v-if="carrinho.length > 0">
+            <ul class="carrinnho-list">
+              <li v-for="(item, index) in carrinho" class="carrinho-item">
+                <p>{{item.nome}}</p>
+                <p class="carrinhoPreco">{{item.preco | numeroPreco}}</p>
+                <button class="carrinho-remover" @click="removerItem(index)">
+                  X
+                </button>
+              </li>
+            </ul>
+            <p class="carrinho-total">{{carrinhoTotal | numeroPreco}}</p>
+            <button class="carrinho-finalizar">Finalizar Compra</button>
           </div>
+          <p v-else>O carrinho está vazio.</p>
         </div>
       </section>
+
+      <div
+        class="alerta"
+        :class="{ativo: alertaAtivo}"
+        @click="cliqueForaCarrinho"
+      >
+        <div class="alerta-mensagem">{{mensagemAlerta}}</div>
+      </div>
     </div>
 
     <script src="./app.js"></script>
