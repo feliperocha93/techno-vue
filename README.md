@@ -19,5 +19,3 @@ Then open `index.html` with Live Server.
 
 ![image](https://user-images.githubusercontent.com/42521544/211174912-6c89ba57-18a8-404d-b28d-2ad4f487310c.png)
 
-##
-<img align="center" alt="Vue" title="Vue" height="60" width="80" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/vuejs/vuejs-original.svg">
